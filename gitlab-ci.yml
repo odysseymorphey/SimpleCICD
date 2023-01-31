@@ -1,0 +1,78 @@
+stages:
+  - build
+  - codestyle
+  - test
+  - deploy
+  - telegram
+
+building:
+  stage: build
+  script:
+    - cd src/cat
+    - make s21_cat
+    - cd ../grep
+    - make s21_grep
+  after_script:
+    - export $CI_JOB_STAGE
+    - export $CI_JOB_STATUS
+    - chmod +x ./tgbot.sh
+    - ./tgbot.sh
+  artifacts:
+    paths:
+      - src/cat/s21_cat
+      - src/grep/s21_grep
+    expire_in: 30 days
+
+code-style:
+  stage: codestyle
+  script:
+    - cd src/cat
+    - make check
+    - cd ../grep
+    - make check
+  after_script:
+    - chmod +x ./tgbot.sh
+    - export $CI_JOB_STAGE
+    - export $CI_JOB_STATUS
+    - ./tgbot.sh
+
+testing:
+  stage: test
+  script:
+    - cd src/cat
+    - make test
+    - cd ../grep
+    - make test
+  after_script:
+    - chmod +x ./tgbot.sh
+    - export $CI_JOB_STAGE
+    - export $CI_JOB_STATUS
+    - ./tgbot.sh
+  when: on_success
+
+deployment:
+  stage: deploy
+  needs:
+    - job: building
+    - job: code-style
+    - job: testing
+      artifacts: true
+  script:
+    - chmod +x deploy.sh
+    - ./deploy.sh
+  after_script:
+    - chmod +x ./tgbot.sh
+    - export $CI_JOB_STAGE
+    - export $CI_JOB_STATUS
+    - ./tgbot.sh
+
+telegram:
+  stage: telegram
+  when: always
+  script:
+    - chmod +x telegram.sh
+    - export CI_PROJECT_NAME
+    - export CI_PROJECT_URL
+    - export CI_PIPELINE_ID
+    - export CI_COMMIT_REF_SLUG
+    - ./telegram.sh
