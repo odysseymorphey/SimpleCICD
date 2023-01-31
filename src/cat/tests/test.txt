@@ -1,0 +1,21 @@
+aboba_one
+
+flopp			a_two
+
+shleppa_three
+
+kopa_four
+ [test_s21_cat] Error 127
+onnikorpela@Alekseis-laptop cat % make test_s21_cat
+./s21_cat -b ./test/test_1.txt ./test/test_2.txt ./test/test.txt ./test/invisibles.txt > ./test/out_s21_cat.txt
+open ./test/out_s21_cat.txt
+onnikorpe			la@Alekseis-laptop cat % make test_cat    
+cat -b ./test/test_1.txt ./test/test_2.txt ./test/test.txt ./test/invisibles.txt > ./test/out_cat.txt
+open ./test/out_cat.txt
+onnikorpela@Alekseis-laptop cat 			% make test_s21_cat
+./s21_cat -b ./test/test_1.txt ./test/test_2.txt ./test/test.txt ./test/invisibles.txt > ./test/out_s21_cat.txt
+open ./test/out_s21_cat.txt
+onnikorpela@Alekseis-laptop cat % make test_s21_cat
+./s21_cat -b -e -n -s -v ./test/test_1.txt ./test/test_2.txt ./test/test.txt ./test/invisibles.txt > ./test/out_s21_cat.txt
+open ./test/out_s21_cat.txt
+onnikorpela@Aleksei			s-laptop cat % make test_c
